@@ -1,6 +1,7 @@
 package bg.softuni.mobiLELELE.service;
 
 import bg.softuni.mobiLELELE.model.dto.UserLoginDTO;
+import bg.softuni.mobiLELELE.model.dto.UserRegisterDTO;
 import bg.softuni.mobiLELELE.model.entity.UserEntity;
 import bg.softuni.mobiLELELE.repository.UserRepository;
 import bg.softuni.mobiLELELE.user.CurrentUser;
@@ -27,6 +28,20 @@ public class UserService {
         this.passwordEncoder = passwordEncoder;
     }
 
+    public void registerAndLogin(UserRegisterDTO userRegisterDTO) {
+        boolean active = true;
+        UserEntity newUser = new UserEntity();
+        newUser.setActive(active);
+        newUser.setEmail(userRegisterDTO.getEmail());
+        newUser.setFirstName(userRegisterDTO.getFirstName());
+        newUser.setLastName(userRegisterDTO.getLastName());
+        newUser.setPassword(passwordEncoder.encode(userRegisterDTO.getPassword()));
+
+        newUser = userRepository.save(newUser);
+
+        login(newUser);
+    }
+
     public boolean login(UserLoginDTO loginDTO) {
         Optional<UserEntity> userOpt = userRepository.findByEmail(loginDTO.getUsername());
 
@@ -39,7 +54,7 @@ public class UserService {
         var encodedPassword = userOpt.get().getPassword();
 
         boolean success = passwordEncoder
-                .matches(rawPassword,encodedPassword);
+                .matches(rawPassword, encodedPassword);
 
         if (success) {
             //todo
