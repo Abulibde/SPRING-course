@@ -3,6 +3,8 @@ package bg.softuni.mobiLELELE.service;
 import bg.softuni.mobiLELELE.model.dto.UserLoginDTO;
 import bg.softuni.mobiLELELE.model.dto.UserRegisterDTO;
 import bg.softuni.mobiLELELE.model.entity.UserEntity;
+
+import bg.softuni.mobiLELELE.model.mapper.UserMapper;
 import bg.softuni.mobiLELELE.repository.UserRepository;
 import bg.softuni.mobiLELELE.user.CurrentUser;
 import org.slf4j.Logger;
@@ -20,12 +22,18 @@ public class UserService {
     private UserRepository userRepository;
     private CurrentUser currentUser;
     private PasswordEncoder passwordEncoder;
+    private UserMapper userMapper;
 
-    public UserService(UserRepository userRepository, CurrentUser currentUser, PasswordEncoder passwordEncoder) {
+
+    public UserService(UserRepository userRepository,
+                       CurrentUser currentUser,
+                       PasswordEncoder passwordEncoder, UserMapper userMapper
+                       ) {
         this.userRepository = userRepository;
         this.currentUser = currentUser;
 
         this.passwordEncoder = passwordEncoder;
+        this.userMapper = userMapper;
     }
 
     public void registerAndLogin(UserRegisterDTO userRegisterDTO) {
