@@ -16,7 +16,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 @RequestMapping("/users")
 public class UserRegistrationController {
 
-    private UserService userService;
+    private final UserService userService;
 
     public UserRegistrationController(UserService userService) {
         this.userService = userService;
@@ -47,7 +47,7 @@ public class UserRegistrationController {
             return "redirect:/users/register";
         }
 
-        userService.registerAndLogin(userModel);
+        this.userService.registerAndLogin(userModel);
 
         return "redirect:/";
     }
